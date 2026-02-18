@@ -39,11 +39,24 @@ cells.forEach(cell => {
 function handleClick(e) {
     if (!gameStarted || gameOver) return;
 
-    const index = e.target.getAttribute("data-index");
+    const cell = e.currentTarget;
+    const index = cell.getAttribute("data-index");
+
     if (board[index] !== "") return;
 
     board[index] = currentPlayer;
-    e.target.textContent = currentPlayer;
+
+    const img = document.createElement("img");
+
+    if (currentPlayer === "X") {
+        img.src = "images/walterX.png";
+    } else {
+        img.src = "images/rumiO.png";
+    }
+
+    img.classList.add("pieceImage");
+
+    cell.appendChild(img);
 
     checkWinner();
 }
@@ -58,11 +71,11 @@ function checkWinner() {
             if (currentPlayer === "X") {
                 xScore++;
                 xScoreDisplay.textContent = xScore;
-                resultMessage.textContent = "You Win 🎉";
+                resultMessage.textContent = "Walter Wins";
             } else {
                 oScore++;
                 oScoreDisplay.textContent = oScore;
-                resultMessage.textContent = "Grace Wins 👑";
+                resultMessage.textContent = "Rumi Wins";
             }
 
             showEndScreen();
@@ -74,7 +87,7 @@ function checkWinner() {
         gameOver = true;
         tieScore++;
         tieScoreDisplay.textContent = tieScore;
-        resultMessage.textContent = "It's a Tie 🤝";
+        resultMessage.textContent = "It's a Tie";
         showEndScreen();
         return;
     }
@@ -94,7 +107,9 @@ function resetGame() {
     currentPlayer = "X";
     gameOver = false;
 
-    cells.forEach(cell => cell.textContent = "");
+    cells.forEach(cell => {
+        cell.innerHTML = "";
+    });
 
     resultOverlay.style.display = "none";
     retryBtn.style.display = "none";

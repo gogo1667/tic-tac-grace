@@ -107,4 +107,11 @@ body {
   cursor: pointer;
 }
 
+.pieceImage {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
 
