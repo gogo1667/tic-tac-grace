@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  background: #111;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+#gameWrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 6px;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background: white;
+  color: black;
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+#welcomeScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: black;
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+
+#welcomeScreen button {
+  margin-top: 20px;
+  font-size: 22px;
+  padding: 10px 20px;
+}
+
+#scoreboard {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+#resultOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#resultBox {
+  background: #ffffff;
+  color: #000000;
+  padding: 30px 40px;
+  border-radius: 16px;
+  text-align: center;
+  min-width: 260px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+#resultMessage {
+  font-size: 30px;
+  font-weight: bold;
+  color: #000000;   /* force black text */
+  margin-bottom: 20px;
+}
+
+#retryBtn {
+  font-size: 20px;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: 2px solid #000;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+
