@@ -1,7 +1,10 @@
 let gameStarted = false;
+let gameMode = null;
 
 const welcomeScreen = document.getElementById("welcomeScreen");
-const startBtn = document.getElementById("startBtn");
+const walterBtn = document.getElementById("walterBtn");
+const rumiBtn = document.getElementById("rumiBtn");
+const twoPlayerBtn = document.getElementById("twoPlayerBtn");
 
 const resultOverlay = document.getElementById("resultOverlay");
 const resultMessage = document.getElementById("resultMessage");
@@ -11,10 +14,9 @@ const xScoreDisplay = document.getElementById("xScore");
 const oScoreDisplay = document.getElementById("oScore");
 const tieScoreDisplay = document.getElementById("tieScore");
 
-startBtn.addEventListener("click", () => {
-    gameStarted = true;
-    welcomeScreen.style.display = "none";
-});
+walterBtn.addEventListener("click", () => startGame("walterComputer"));
+rumiBtn.addEventListener("click", () => startGame("rumiComputer"));
+twoPlayerBtn.addEventListener("click", () => startGame("twoPlayer"));
 
 let currentPlayer = "X";
 let board = ["", "", "", "", "", "", "", "", ""];
@@ -23,6 +25,24 @@ let gameOver = false;
 let xScore = 0;
 let oScore = 0;
 let tieScore = 0;
+
+function startGame(mode) {
+    gameMode = mode;
+    gameStarted = true;
+    welcomeScreen.style.display = "none";
+
+    // Reset board state
+    board = ["", "", "", "", "", "", "", "", ""];
+    cells.forEach(cell => cell.innerHTML = "");
+    gameOver = false;
+
+    currentPlayer = mode === "rumiComputer" ? "O" : "X";
+
+    // If computer should go first, make its move
+    if (isComputerTurn()) {
+        setTimeout(computerMove, 400);
+    }
+}
 
 const cells = document.querySelectorAll(".cell");
 
@@ -44,21 +64,52 @@ function handleClick(e) {
 
     if (board[index] !== "") return;
 
+    // Prevent human from playing computer's turn
+    if (isComputerTurn()) return;
+
+    makeMove(cell, index);
+}
+
+function makeMove(cell, index) {
     board[index] = currentPlayer;
 
     const img = document.createElement("img");
-
-    if (currentPlayer === "X") {
-        img.src = "images/walterX.png";
-    } else {
-        img.src = "images/rumiO.png";
-    }
-
+    img.src = currentPlayer === "X"
+        ? "images/walterX.png"
+        : "images/rumiO.png";
     img.classList.add("pieceImage");
 
     cell.appendChild(img);
 
-    checkWinner();
+    if (checkWinner()) return;
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+
+    if (!gameOver && isComputerTurn()) {
+        setTimeout(computerMove, 400);
+    }
+}
+
+function isComputerTurn() {
+    if (gameMode === "twoPlayer") return false;
+
+    if (gameMode === "walterComputer" && currentPlayer === "O") return true;
+    if (gameMode === "rumiComputer" && currentPlayer === "X") return true;
+
+    return false;
+}
+
+function computerMove() {
+    let emptyIndexes = board
+        .map((val, idx) => val === "" ? idx : null)
+        .filter(v => v !== null);
+
+    if (emptyIndexes.length === 0) return;
+
+    let randomIndex = emptyIndexes[Math.floor(Math.random() * emptyIndexes.length)];
+    let cell = document.querySelector(`.cell[data-index="${randomIndex}"]`);
+
+    makeMove(cell, randomIndex);
 }
 
 function checkWinner() {
@@ -68,7 +119,7 @@ function checkWinner() {
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
             gameOver = true;
 
-            if (currentPlayer === "X") {
+            if (board[a] === "X") {
                 xScore++;
                 xScoreDisplay.textContent = xScore;
                 resultMessage.textContent = "Walter Wins";
@@ -79,7 +130,7 @@ function checkWinner() {
             }
 
             showEndScreen();
-            return;
+            return true;
         }
     }
 
@@ -89,10 +140,10 @@ function checkWinner() {
         tieScoreDisplay.textContent = tieScore;
         resultMessage.textContent = "It's a Tie";
         showEndScreen();
-        return;
+        return true;
     }
 
-    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    return false;
 }
 
 function showEndScreen() {
