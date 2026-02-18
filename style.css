@@ -1,3 +1,7 @@
+/* =========================
+   GLOBAL
+========================= */
+
 body {
   margin: 0;
   background: #111;
@@ -14,6 +18,11 @@ body {
   align-items: center;
 }
 
+
+/* =========================
+   GAME BOARD
+========================= */
+
 #gameContainer {
   display: flex;
   justify-content: center;
@@ -24,45 +33,32 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
-  gap: 6px;
+  gap: 8px;
 }
 
 .cell {
   width: 100px;
   height: 100px;
   background: white;
-  color: black;
-  font-size: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-#welcomeScreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: black;
-  z-index: 9999;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
+.pieceImage {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;
 }
 
-#welcomeScreen button {
-  margin-top: 20px;
-  font-size: 22px;
-  padding: 10px 20px;
-}
+
+/* =========================
+   SCOREBOARD
+========================= */
 
 #scoreboard {
   display: flex;
@@ -70,6 +66,11 @@ body {
   margin-bottom: 20px;
   font-size: 18px;
 }
+
+
+/* =========================
+   RESULT OVERLAY
+========================= */
 
 #resultOverlay {
   position: fixed;
@@ -94,7 +95,6 @@ body {
 #resultMessage {
   font-size: 30px;
   font-weight: bold;
-  color: #000000;   /* force black text */
   margin-bottom: 20px;
 }
 
@@ -107,11 +107,101 @@ body {
   cursor: pointer;
 }
 
-.pieceImage {
-  width: 80%;
-  height: 80%;
-  object-fit: contain;
-  pointer-events: none;
+
+/* =========================
+   WELCOME SCREEN (MENU)
+========================= */
+
+#welcomeScreen {
+  position: fixed;
+  inset: 0;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#menuContent {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 20px;
+}
+
+#menuImage {
+  width: 350px;
+  height: 500px;
+  background-image: url("images/graceMenu.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#menuButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#menuButtons h1 {
+  margin-bottom: 20px;
+  font-size: 36px;
+}
+
+#menuButtons button {
+  font-size: 20px;
+  padding: 14px 30px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(45deg, #6a5cff, #ff4dc4);
+  color: white;
+  transition: transform 0.1s ease;
+}
+
+#menuButtons button:active {
+  transform: scale(0.95);
 }
 
 
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  #menuContent {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  #menuImage {
+    width: 250px;
+    height: 350px;
+  }
+
+  #menuButtons h1 {
+    font-size: 28px;
+  }
+
+  #menuButtons button {
+    width: 260px;
+  }
+
+  #board {
+    grid-template-columns: repeat(3, 85px);
+    grid-template-rows: repeat(3, 85px);
+  }
+
+  .cell {
+    width: 85px;
+    height: 85px;
+  }
+
+  #scoreboard {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+}
